@@ -1,0 +1,47 @@
+services:
+  app:
+    build: .
+    container_name: central-pagamentos-app
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+    ports:
+      - 80:80
+    networks:
+      - central-pagamentos
+
+  db:
+    image: mysql:8.0
+    container_name: central-pagamentos-db
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - central-pagamentos
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: central-pagamentos-phpmyadmin
+    ports:
+      - 8080:80
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_USER=${DB_USERNAME}
+    networks:
+      - central-pagamentos
+
+networks:
+  central-pagamentos:
+    driver: bridge
+
+volumes:
+  dbdata:
