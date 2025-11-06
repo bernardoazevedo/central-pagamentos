@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
 
 Route::get('/client', [ClientController::class, 'index'])->name('client.index');
-Route::get('/client/{id}', [ClientController::class, 'getClient'])->name('client.index');
+Route::get('/client/{id}', [ClientController::class, 'getClient'])->name('client.get');
 
 Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
+Route::get('/transaction/{id}', [TransactionController::class, 'getTransaction'])->name('transaction.get');
