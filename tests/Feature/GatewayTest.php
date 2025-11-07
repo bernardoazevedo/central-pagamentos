@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Gateway;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Response;
 use Tests\TestCase;
 
 class GatewayTest extends TestCase
@@ -25,7 +26,7 @@ class GatewayTest extends TestCase
                 'priority' => 3,
             ]
         );
-        $response->assertStatus(200);
+        $response->assertStatus(Response::HTTP_OK);
 
         $gateway->refresh();
 
