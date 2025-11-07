@@ -12,10 +12,11 @@ RUN apt-get update && \
     libpng-dev \
     libicu-dev \
     libpq-dev \
-    libmagickwand-dev \
-    php8.2-sqlite3
+    libmagickwand-dev 
 
 RUN docker-php-ext-install pdo_mysql zip exif pcntl bcmath gd
+
+RUN pecl install pcov && docker-php-ext-enable pcov
 
 
 # configurando grupo e usuário
