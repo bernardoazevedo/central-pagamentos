@@ -25,8 +25,8 @@ class ProductTest extends TestCase
                 $json->has(1)
                     ->first(fn (AssertableJson $json) =>
                         $json->where('id', $product->id)
-                        ->where('name', 'Test Product')
-                        ->where('amount', 1999)
+                            ->where('name', 'Test Product')
+                            ->where('amount', 1999)
                     )
             );
     }
