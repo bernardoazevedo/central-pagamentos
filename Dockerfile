@@ -12,7 +12,8 @@ RUN apt-get update && \
     libpng-dev \
     libicu-dev \
     libpq-dev \
-    libmagickwand-dev
+    libmagickwand-dev \
+    php8.2-sqlite3
 
 RUN docker-php-ext-install pdo_mysql zip exif pcntl bcmath gd
 
