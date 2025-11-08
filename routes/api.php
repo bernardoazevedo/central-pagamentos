@@ -7,7 +7,11 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+Route::post('/product', [ProductController::class, 'create'])->name('product.create');
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+Route::get('/product/{id}', [ProductController::class, 'get'])->name('product.get');
+Route::patch('/product/{id}', [ProductController::class, 'update'])->name('product.update');
+Route::delete('/product/{id}', [ProductController::class, 'delete'])->name('product.delete');
 
 Route::get('/client', [ClientController::class, 'index'])->name('client.index');
 Route::get('/client/{id}', [ClientController::class, 'get'])->name('client.get');

@@ -30,4 +30,83 @@ class ProductTest extends TestCase
                     )
             );
     }
+
+    public function test_create_product_request(): void
+    {
+        $productValues = [
+            'name' => 'New Product Test',
+            'amount' => 5599,
+        ];
+
+        $response = $this->json('post', 'api/product', $productValues)
+            ->assertStatus(Response::HTTP_CREATED)
+            ->assertJson(fn (AssertableJson $json) =>
+                $json->has('id')
+                    ->where('name', $productValues['name'])
+                    ->where('amount', $productValues['amount'])
+        );
+    }
+
+    public function test_get_product_request(): void
+    {
+        $productValues = [
+            'name' => 'New Product Test',
+            'amount' => 5599,
+        ];
+        $product = Product::factory()->create($productValues);
+
+        $response = $this->json('get', "api/product/{$product->id}", [])
+            ->assertStatus(Response::HTTP_OK)
+            ->assertJson(fn (AssertableJson $json) =>
+                $json->where('id', $product->id)
+                    ->where('name', $productValues['name'])
+                    ->where('amount', $productValues['amount'])
+        );
+    }
+
+    public function test_get_not_created_product_request(): void
+    {
+        $response = $this->json('get', "api/product/100", [])
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
+    public function test_update_product_request(): void
+    {
+        $productValues = [
+            'name' => 'New Product Test',
+            'amount' => 5599,
+        ];
+        $product = Product::factory()->create($productValues);
+
+        $productNewValues = [
+            'name' => 'Name Updated',
+            'amount' => 12050,
+        ];
+        $response = $this->json('patch', "api/product/{$product->id}", $productNewValues)
+            ->assertStatus(Response::HTTP_OK)
+            ->assertJson(fn (AssertableJson $json) =>
+                $json->where('id', $product->id)
+                    ->where('name', $productNewValues['name'])
+                    ->where('amount', $productNewValues['amount'])
+        );
+    }
+
+    public function test_update_not_created_product_request(): void
+    {
+        $response = $this->json('patch', "api/product/100", [])
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
+    public function test_delete_product_request(): void
+    {
+        $product = Product::factory()->create();
+        $response = $this->json('delete', "api/product/{$product->id}", [])
+            ->assertStatus(Response::HTTP_OK);
+    }
+
+    public function test_delete_not_created_product_request(): void
+    {
+        $response = $this->json('delete', "api/product/100", [])
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+    }
 }
