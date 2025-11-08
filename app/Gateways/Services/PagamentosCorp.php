@@ -8,14 +8,16 @@ use Illuminate\Support\Facades\Http;
 
 class PagamentosCorp extends AbstractGateway
 {
-    public string $url = 'http://central-pagamentos-gateways:3001';
-    public string $username = 'dev@betalent.tech';
-    public string $password = 'FEC9BB078BF338F464F96B48089EB498';
+    public string $url;
+    public string $username;
+    public string $password;
     public string $token;
 
     public function __construct()
     {
-
+        $this->url = config('gateways.PagamentosCorp.url');
+        $this->username = config('gateways.PagamentosCorp.username');
+        $this->password = config('gateways.PagamentosCorp.password');
     }
 
     public function login()
