@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TransactionStatus;
+use App\Gateways\Services\PagamentosCorp;
 use App\Models\Client;
 use App\Models\Gateway;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\TransactionProduct;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use ReflectionClass;
 
 class TransactionController extends Controller
 {
@@ -66,5 +71,86 @@ class TransactionController extends Controller
         }
 
         return response()->json($transaction, 200);
+    }
+
+    public function create(Request $request)
+    {
+        $validated = $request->validate([
+            'client.name' => 'required|string|max:255',
+            'client.email' => 'required|string|max:255|email',
+            'payment_info.card_numbers' => 'required|string|size:16',
+            'payment_info.cvv' => 'required|string|size:3',
+            'products.*' => 'exists:products,id'
+        ]);
+
+        $client = Client::create([
+            'name' => $request->client['name'],
+            'email' => $request->client['email'],
+        ]);
+
+        $total_amount = 0;
+        foreach($request->products as $eachProduct) {
+            $eachProduct = Product::find($eachProduct);
+            $total_amount += $eachProduct->amount;
+        }
+
+        $pagamentosCorp = new PagamentosCorp();
+        $pagamentosCorp->login();
+        $external_id = $pagamentosCorp->sendTransaction([
+            'name' => $request->client['name'],
+            'email' => $request->client['email'],
+            'amount' => $total_amount,
+            'card_numbers' => $request->payment_info['card_numbers'],
+            'cvv' => $request->payment_info['cvv'],
+        ]);
+
+        $transaction = Transaction::create([
+            'clients_id' => $client->id,
+            'status' => TransactionStatus::PAID,
+            'external_id' => $external_id,
+            'gateways_id' => 1,
+            'card_last_numbers' => substr($request->payment_info['card_numbers'], -4),
+            'amount' => $total_amount,
+        ]);
+
+        foreach($request->products as $eachProduct) {
+            TransactionProduct::create([
+                'transactions_id' => $transaction->id,
+                'products_id' => $eachProduct,
+            ]);
+        }
+
+        return response()->json([
+            'id' => $transaction->id,
+            'amount' => $transaction->amount,
+            'status' => $transaction->status,
+        ], Response::HTTP_CREATED);
+    }
+
+    public function chargeback(string $id)
+    {
+        $transaction = Transaction::find($id);
+        if(!$transaction) {
+            return response()->json(['message' => 'ID not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $gateway = Gateway::find($transaction->gateways_id);
+
+        $reflection = new ReflectionClass("App\Gateways\Services\\".$gateway->class_name);
+        $gateway = $reflection->newInstance();
+
+        $gateway->login();
+        if(!$gateway->chargeback($transaction->external_id)) {
+            return response()->json(['message' => 'Error at chargeback, try again in a few moments'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        $transaction->status = TransactionStatus::CHARGED_BACK;
+        $transaction->save();
+
+        return response()->json([
+            'id' => $transaction->id,
+            'amount' => $transaction->amount,
+            'status' => $transaction->status,
+        ], Response::HTTP_CREATED);
     }
 }

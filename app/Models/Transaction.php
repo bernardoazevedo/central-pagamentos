@@ -16,6 +16,11 @@ class Transaction extends Model
      * @var list<string>
      */
     protected $fillable = [
-
+        'clients_id',
+        'gateways_id',
+        'external_id',
+        'status',
+        'amount',
+        'card_last_numbers',
     ];
 }

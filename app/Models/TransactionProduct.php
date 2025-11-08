@@ -12,6 +12,7 @@ class TransactionProduct extends Model
      * @var list<string>
      */
     protected $fillable = [
-
+        'transactions_id',
+        'products_id',
     ];
 }
