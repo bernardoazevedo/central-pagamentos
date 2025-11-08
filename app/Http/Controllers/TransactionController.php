@@ -22,12 +22,19 @@ class TransactionController extends Controller
             'card_last_numbers',
         ]);
 
-        foreach($transactions as $key => $eachTransaction) {
-            $transactions[$key]['client'] = Client::find($eachTransaction['clients_id'], ['id', 'name', 'email']);
-            unset($transactions[$key]['clients_id']);
+        foreach($transactions as $transactionKey => $eachTransaction) {
+            $transactions[$transactionKey]['client'] = Client::find($eachTransaction['clients_id'], ['id', 'name', 'email']);
+            unset($transactions[$transactionKey]['clients_id']);
 
-            $transactions[$key]['gateway'] = Gateway::find($eachTransaction['gateways_id'], ['id', 'name']);
-            unset($transactions[$key]['gateways_id']);
+            $transactions[$transactionKey]['gateway'] = Gateway::find($eachTransaction['gateways_id'], ['id', 'name']);
+            unset($transactions[$transactionKey]['gateways_id']);
+
+            $transactions[$transactionKey]['products'] = TransactionProduct::where('transactions_id', $transactions[$transactionKey]['id'])
+                ->select('products_id as id')
+                ->get();
+            foreach($transactions[$transactionKey]['products'] as $productKey => $eachProduct) {
+                $transactions[$transactionKey]['products'][$productKey] = Product::find($eachProduct['id'], ['id', 'name', 'amount']);
+            }
         }
 
         return response()->json($transactions, 200);
