@@ -16,6 +16,7 @@ class GatewayTest extends TestCase
     {
         $gatewayValues = [
             'name' => 'Gateway Test',
+            'class_name' => 'PagamentosCorp',
             'is_active' => true,
             'priority' => 1,
         ];
@@ -40,6 +41,7 @@ class GatewayTest extends TestCase
     {
         $gatewayValues = [
             'name' => 'Gateway Test',
+            'class_name' => 'PagamentosCorp',
             'is_active' => true,
             'priority' => 1,
         ];
@@ -63,6 +65,7 @@ class GatewayTest extends TestCase
     {
         $gatewayValues = [
             'name' => 'Gateway Test',
+            'class_name' => 'PagamentosCorp',
             'is_active' => true,
             'priority' => 1,
         ];

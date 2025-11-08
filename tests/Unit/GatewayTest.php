@@ -14,6 +14,7 @@ class GatewayTest extends TestCase
     {
         $validGateway = Gateway::factory()->create([
             'name' => 'Valid Gateway Test',
+            'class_name' => 'PagamentosCorp',
             'is_active' => true,
             'priority' => 1,
         ]);
@@ -25,6 +26,7 @@ class GatewayTest extends TestCase
     {
         $gateway = Gateway::factory()->create([
             'name' => 'Valid Gateway Test',
+            'class_name' => 'PagamentosCorp',
             'is_active' => true,
             'priority' => 1,
         ]);
