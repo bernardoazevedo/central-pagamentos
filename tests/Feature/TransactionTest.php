@@ -95,92 +95,111 @@ class TransactionTest extends TestCase
 
     public function test_create_transaction_request(): void
     {
-        $gateway = Gateway::factory()->create([
-            'name' => 'Valid Gateway Test',
-            'class_name' => 'PagamentosCorp',
-            'is_active' => true,
-            'priority' => 1,
-        ]);
-        $product1 = Product::factory()->create([
-            'name' => 'First Product',
-            'amount' => 2000,
-        ]);
-        $product2 = Product::factory()->create([
-            'name' => 'Second Product',
-            'amount' => 5500,
-        ]);
-
-        $transactionValues = [
-            'client' => [
-                'name' => 'A new client',
-                'email' => "new@new.com",
+        $gatewayValues = [
+            [
+                'class_name' => 'PagamentosCorp',
+                'is_active' => true,
+                'priority' => 2,
             ],
-            'payment_info' => [
-                'card_numbers' => '1111222233334444',
-                'cvv' => '123',
-            ],
-            'products' => [
-                $product1->id,
-                $product2->id,
-            ],
+            [
+                'class_name' => 'PaymentsEnterprise',
+                'is_active' => true,
+                'priority' => 1,
+            ]
         ];
+        foreach($gatewayValues as $eachGateway) {
+            $gateway = Gateway::factory()->create($eachGateway);
+            $product1 = Product::factory()->create([
+                'name' => 'First Product',
+                'amount' => 2000,
+            ]);
+            $product2 = Product::factory()->create([
+                'name' => 'Second Product',
+                'amount' => 5500,
+            ]);
 
-        $response = $this->json('post', 'api/transaction', $transactionValues)
-            ->assertStatus(Response::HTTP_CREATED)
-            ->assertJson(fn (AssertableJson $json) =>
-                $json->has('id')
-                    ->where('status', TransactionStatus::PAID)
-                    ->where('amount', $product1->amount + $product2->amount)
-            );
+            $transactionValues = [
+                'client' => [
+                    'name' => 'A new client',
+                    'email' => "new@new.com",
+                ],
+                'payment_info' => [
+                    'card_numbers' => '1111222233334444',
+                    'cvv' => '123',
+                ],
+                'products' => [
+                    $product1->id,
+                    $product2->id,
+                ],
+            ];
+
+            $response = $this->json('post', 'api/transaction', $transactionValues)
+                ->assertStatus(Response::HTTP_CREATED)
+                ->assertJson(fn (AssertableJson $json) =>
+                    $json->has('id')
+                        ->where('status', TransactionStatus::PAID)
+                        ->where('amount', $product1->amount + $product2->amount)
+                );
+        }
     }
 
     public function test_create_and_chargeback_transaction_request(): void
     {
-        $gateway = Gateway::factory()->create([
-            'name' => 'Valid Gateway Test',
-            'class_name' => 'PagamentosCorp',
-            'is_active' => true,
-            'priority' => 1,
-        ]);
-        $product1 = Product::factory()->create([
-            'name' => 'First Product',
-            'amount' => 2000,
-        ]);
-        $product2 = Product::factory()->create([
-            'name' => 'Second Product',
-            'amount' => 5500,
-        ]);
-
-        $transactionValues = [
-            'client' => [
-                'name' => 'A new client',
-                'email' => "new@new.com",
+        $gatewayValues = [
+            [
+                'class_name' => 'PagamentosCorp',
+                'is_active' => true,
+                'priority' => 2,
             ],
-            'payment_info' => [
-                'card_numbers' => '1111222233334444',
-                'cvv' => '123',
-            ],
-            'products' => [
-                $product1->id,
-                $product2->id,
-            ],
+            [
+                'class_name' => 'PaymentsEnterprise',
+                'is_active' => true,
+                'priority' => 1,
+            ]
         ];
+        foreach($gatewayValues as $eachGateway) {
+            $gateway = Gateway::factory()->create($eachGateway);
+            $product1 = Product::factory()->create([
+                'name' => 'First Product',
+                'amount' => 2000,
+            ]);
+            $product2 = Product::factory()->create([
+                'name' => 'Second Product',
+                'amount' => 5500,
+            ]);
 
-        // create transaction
-        $response = $this->json('post', 'api/transaction', $transactionValues)
-            ->assertStatus(Response::HTTP_CREATED)
-            ->assertJson(fn (AssertableJson $json) =>
-                $json->has('id')
-                    ->where('status', TransactionStatus::PAID)
-                    ->where('amount', $product1->amount + $product2->amount)
-            );
+            $transactionValues = [
+                'client' => [
+                    'name' => 'A new client',
+                    'email' => "new@new.com",
+                ],
+                'payment_info' => [
+                    'card_numbers' => '1111222233334444',
+                    'cvv' => '123',
+                ],
+                'products' => [
+                    $product1->id,
+                    $product2->id,
+                ],
+            ];
 
-        // chargeback
-        $response = $this->json('post', "api/transaction/{$response->original['id']}/chargeback", [])
-            ->assertStatus(Response::HTTP_CREATED)
-            ->assertJson(fn (AssertableJson $json) =>
-                $json->has('id')
-                    ->where('status', TransactionStatus::CHARGED_BACK)
-                    ->where('amount', $product1->amount + $product2->amount)
-            );    }
+            // create transaction
+            $response = $this->json('post', 'api/transaction', $transactionValues)
+                ->assertStatus(Response::HTTP_CREATED)
+                ->assertJson(fn (AssertableJson $json) =>
+                    $json->has('id')
+                        ->where('status', TransactionStatus::PAID)
+                        ->where('amount', $product1->amount + $product2->amount)
+                );
+
+            // chargeback
+            $response = $this->json('post', "api/transaction/{$response->original['id']}/chargeback", [])
+                ->assertStatus(Response::HTTP_CREATED)
+                ->assertJson(fn (AssertableJson $json) =>
+                    $json->has('id')
+                        ->where('status', TransactionStatus::CHARGED_BACK)
+                        ->where('amount', $product1->amount + $product2->amount)
+                );
+        }
+    }
 }

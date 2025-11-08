@@ -94,21 +94,30 @@ class TransactionController extends Controller
             $total_amount += $eachProduct->amount;
         }
 
-        $pagamentosCorp = new PagamentosCorp();
-        $pagamentosCorp->login();
-        $external_id = $pagamentosCorp->sendTransaction([
-            'name' => $request->client['name'],
-            'email' => $request->client['email'],
-            'amount' => $total_amount,
-            'card_numbers' => $request->payment_info['card_numbers'],
-            'cvv' => $request->payment_info['cvv'],
-        ]);
+        $usedGateway = '';
+        $activeGateways = Gateway::where('is_active', '=', 1)->orderBy('priority')->get();
+        foreach($activeGateways as $eachGateway) {
+            $reflection = new ReflectionClass("App\Gateways\Services\\".$eachGateway->class_name);
+            $gateway = $reflection->newInstance();
+            $gateway->login();
+            $external_id = $gateway->sendTransaction([
+                'name' => $request->client['name'],
+                'email' => $request->client['email'],
+                'amount' => $total_amount,
+                'card_numbers' => $request->payment_info['card_numbers'],
+                'cvv' => $request->payment_info['cvv'],
+            ]);
+            if($external_id) {
+                $usedGateway = $eachGateway;
+                break;
+            }
+        }
 
         $transaction = Transaction::create([
             'clients_id' => $client->id,
             'status' => TransactionStatus::PAID,
             'external_id' => $external_id,
-            'gateways_id' => 1,
+            'gateways_id' => $usedGateway->id,
             'card_last_numbers' => substr($request->payment_info['card_numbers'], -4),
             'amount' => $total_amount,
         ]);

@@ -14,11 +14,13 @@ class GatewaySeeder extends Seeder
     {
         Gateway::factory()->create([
             'name' => 'Pagamentos Corp',
+            'class_name' => 'PagamentosCorp',
             'priority' => 1,
         ]);
 
         Gateway::factory()->create([
             'name' => 'Payments Enterprise',
+            'class_name' => 'PaymentsEnterprise',
             'priority' => 2,
         ]);
     }
