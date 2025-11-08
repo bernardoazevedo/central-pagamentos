@@ -102,4 +102,18 @@ class UserTest extends TestCase
                     ->where('role', $userNewValues['role'])
         );
     }
+
+    public function test_delete_user_request(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->json('delete', "api/user/{$user->id}", [])
+            ->assertStatus(Response::HTTP_OK);
+    }
+
+    public function test_delete_not_created_user_request(): void
+    {
+        $response = $this->json('delete', "api/user/100", [])
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+    }
 }

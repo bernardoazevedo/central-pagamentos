@@ -21,3 +21,4 @@ Route::post('/user', [UserController::class, 'create'])->name('user.create');
 Route::get('/user', [UserController::class, 'index'])->name('user.index');
 Route::get('/user/{id}', [UserController::class, 'get'])->name('user.get');
 Route::patch('/user/{id}', [UserController::class, 'update'])->name('user.update');
+Route::delete('/user/{id}', [UserController::class, 'delete'])->name('user.delete');

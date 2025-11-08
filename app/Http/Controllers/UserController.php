@@ -72,4 +72,15 @@ class UserController extends Controller
             'role' => $user->role,
         ], Response::HTTP_OK);
     }
+
+    public function delete($id)
+    {
+        $user = User::find($id);
+        if($user) {
+            $user->delete();
+            return response()->json(['message' => "$id deleted"], Response::HTTP_OK);
+        }
+
+        return response()->json(['message' => 'ID not found'], Response::HTTP_NOT_FOUND);
+    }
 }
