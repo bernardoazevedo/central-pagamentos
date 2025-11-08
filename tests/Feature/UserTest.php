@@ -82,6 +82,12 @@ class UserTest extends TestCase
             );
     }
 
+    public function test_list_empty_users_request(): void
+    {
+        $response = $this->json('get', "api/user", [])
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
     public function test_update_user_request(): void
     {
         $userValues = [

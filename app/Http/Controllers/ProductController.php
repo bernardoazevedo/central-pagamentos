@@ -11,6 +11,10 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all(['id','name','amount']);
+        if(count($products) == 0) {
+            return response()->json(['message' => 'No items stored'], Response::HTTP_NOT_FOUND);
+        }
+        
         return response()->json($products, 200);
     }
 
@@ -35,7 +39,7 @@ class ProductController extends Controller
         if(empty($product)) {
             return response()->json(['message' => 'ID not found'], Response::HTTP_NOT_FOUND);
         }
-        
+
         return response()->json($product, Response::HTTP_OK);
     }
 

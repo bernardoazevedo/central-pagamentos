@@ -32,6 +32,10 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all(['id','name','email', 'role']);
+        if(count($users) == 0) {
+            return response()->json(['message' => 'No items stored'], Response::HTTP_NOT_FOUND);
+        }
+
         return response()->json($users, Response::HTTP_OK);
     }
 

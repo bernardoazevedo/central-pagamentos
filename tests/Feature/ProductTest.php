@@ -31,6 +31,12 @@ class ProductTest extends TestCase
             );
     }
 
+    public function test_list_empty_products_request(): void
+    {
+        $response = $this->json('get', "api/product", [])
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
     public function test_create_product_request(): void
     {
         $productValues = [
