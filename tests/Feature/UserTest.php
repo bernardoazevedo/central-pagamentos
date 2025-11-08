@@ -75,4 +75,31 @@ class UserTest extends TestCase
                     )
             );
     }
+
+    public function test_update_user_request(): void
+    {
+        $userValues = [
+            'name' => 'New User Test',
+            'email' => 'user@user.com',
+            'password' => '@123User',
+            'role' => Role::FINANCE,
+        ];
+        $user = User::factory()->create($userValues);
+
+        $userNewValues = [
+            'name' => 'Name Updated',
+            'email' => 'email@updated.com',
+            'password' => '@newPass321',
+            'password_confirmation' => '@newPass321',
+            'role' => Role::USER,
+        ];
+        $response = $this->json('patch', "api/user/{$user->id}", $userNewValues)
+            ->assertStatus(Response::HTTP_OK)
+            ->assertJson(fn (AssertableJson $json) =>
+                $json->where('id', $user->id)
+                    ->where('name', $userNewValues['name'])
+                    ->where('email', $userNewValues['email'])
+                    ->where('role', $userNewValues['role'])
+        );
+    }
 }

@@ -40,4 +40,36 @@ class UserController extends Controller
         $user = User::find($id, ['id', 'name', 'email', 'role']);
         return response()->json($user, Response::HTTP_OK);
     }
+
+    public function update(Request $request, int $id)
+    {
+        $request->validate([
+            'name' => 'max:255',
+            'email' => "max:255|email|unique:users,email,$id",
+            'password' => ['string', Password::defaults(), 'confirmed'],
+            'role' => [Rule::enum(Role::class)],
+        ]);
+
+        $user = User::find($id);
+        if(isset($request->name)) {
+            $user->name = $request->name;
+        }
+        if(isset($request->email)) {
+            $user->email = $request->email;
+        }
+        if(isset($request->password)) {
+            $user->password = $request->password;
+        }
+        if(isset($request->role)) {
+            $user->role = $request->role;
+        }
+        $user->save();
+
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+        ], Response::HTTP_OK);
+    }
 }

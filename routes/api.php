@@ -15,8 +15,9 @@ Route::get('/client/{id}', [ClientController::class, 'get'])->name('client.get')
 Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
 Route::get('/transaction/{id}', [TransactionController::class, 'get'])->name('transaction.get');
 
-Route::patch('/gateway/{id}', [GatewayController::class, 'edit'])->name('gateway.edit');
+Route::patch('/gateway/{id}', [GatewayController::class, 'update'])->name('gateway.update');
 
 Route::post('/user', [UserController::class, 'create'])->name('user.create');
 Route::get('/user', [UserController::class, 'index'])->name('user.index');
 Route::get('/user/{id}', [UserController::class, 'get'])->name('user.get');
+Route::patch('/user/{id}', [UserController::class, 'update'])->name('user.update');

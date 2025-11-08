@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class GatewayController extends Controller
 {
-    public function edit(Request $request, int $id)
+    public function update(Request $request, int $id)
     {
         $request->validate([
             'is_active' => 'boolean',
