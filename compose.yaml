@@ -39,6 +39,15 @@ services:
     networks:
       - central-pagamentos
 
+  gateways:
+    image: matheusprotzen/gateways-mock
+    container_name: central-pagamentos-gateways
+    ports:
+      - "3001:3001"
+      - "3002:3002"
+    networks:
+      - central-pagamentos
+      
 networks:
   central-pagamentos:
     driver: bridge
