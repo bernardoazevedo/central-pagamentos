@@ -16,8 +16,10 @@ Route::delete('/product/{id}', [ProductController::class, 'delete'])->name('prod
 Route::get('/client', [ClientController::class, 'index'])->name('client.index');
 Route::get('/client/{id}', [ClientController::class, 'get'])->name('client.get');
 
+Route::post('/transaction', [TransactionController::class, 'create'])->name('transaction.create');
 Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
 Route::get('/transaction/{id}', [TransactionController::class, 'get'])->name('transaction.get');
+Route::post('/transaction/{id}/chargeback', [TransactionController::class, 'chargeback'])->name('transaction.chargeback');
 
 Route::patch('/gateway/{id}', [GatewayController::class, 'update'])->name('gateway.update');
 
