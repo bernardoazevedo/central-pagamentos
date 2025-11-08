@@ -38,6 +38,10 @@ class UserController extends Controller
     public function get($id)
     {
         $user = User::find($id, ['id', 'name', 'email', 'role']);
+        if(empty($user)) {
+            return response()->json(['message' => 'ID not found'], Response::HTTP_NOT_FOUND);
+        }
+
         return response()->json($user, Response::HTTP_OK);
     }
 
@@ -51,6 +55,10 @@ class UserController extends Controller
         ]);
 
         $user = User::find($id);
+        if(empty($user)) {
+            return response()->json(['message' => 'ID not found'], Response::HTTP_NOT_FOUND);
+        }
+
         if(isset($request->name)) {
             $user->name = $request->name;
         }
@@ -80,7 +88,6 @@ class UserController extends Controller
             $user->delete();
             return response()->json(['message' => "$id deleted"], Response::HTTP_OK);
         }
-
         return response()->json(['message' => 'ID not found'], Response::HTTP_NOT_FOUND);
     }
 }

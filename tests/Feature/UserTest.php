@@ -53,6 +53,12 @@ class UserTest extends TestCase
         );
     }
 
+    public function test_get_not_created_user_request(): void
+    {
+        $response = $this->json('delete', "api/user/100", [])
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
     public function test_list_users_request(): void
     {
         $userValues = [
@@ -101,6 +107,12 @@ class UserTest extends TestCase
                     ->where('email', $userNewValues['email'])
                     ->where('role', $userNewValues['role'])
         );
+    }
+
+    public function test_update_not_created_user_request(): void
+    {
+        $response = $this->json('patch', "api/user/100", [])
+            ->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
     public function test_delete_user_request(): void
