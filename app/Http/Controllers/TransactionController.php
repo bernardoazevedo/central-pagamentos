@@ -40,7 +40,7 @@ class TransactionController extends Controller
         return response()->json($transactions, 200);
     }
 
-    public function getTransaction($id)
+    public function get($id)
     {
         $transaction = Transaction::find($id, [
             'id',

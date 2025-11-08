@@ -10,11 +10,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
 
 Route::get('/client', [ClientController::class, 'index'])->name('client.index');
-Route::get('/client/{id}', [ClientController::class, 'getClient'])->name('client.get');
+Route::get('/client/{id}', [ClientController::class, 'get'])->name('client.get');
 
 Route::get('/transaction', [TransactionController::class, 'index'])->name('transaction.index');
-Route::get('/transaction/{id}', [TransactionController::class, 'getTransaction'])->name('transaction.get');
+Route::get('/transaction/{id}', [TransactionController::class, 'get'])->name('transaction.get');
 
 Route::patch('/gateway/{id}', [GatewayController::class, 'edit'])->name('gateway.edit');
 
 Route::post('/user', [UserController::class, 'create'])->name('user.create');
+Route::get('/user', [UserController::class, 'index'])->name('user.index');
+Route::get('/user/{id}', [UserController::class, 'get'])->name('user.get');

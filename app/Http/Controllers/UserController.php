@@ -28,4 +28,16 @@ class UserController extends Controller
             'role' => $user->role,
         ], Response::HTTP_CREATED);
     }
+
+    public function index()
+    {
+        $users = User::all(['id','name','email', 'role']);
+        return response()->json($users, Response::HTTP_OK);
+    }
+
+    public function get($id)
+    {
+        $user = User::find($id, ['id', 'name', 'email', 'role']);
+        return response()->json($user, Response::HTTP_OK);
+    }
 }

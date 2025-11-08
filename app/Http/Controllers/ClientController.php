@@ -13,7 +13,7 @@ class ClientController extends Controller
         return response()->json($clients, 200);
     }
 
-    public function getClient($id)
+    public function get($id)
     {
         $client = Client::find($id, ['id', 'name', 'email']);
         $client['transactions'] = Transaction::where('clients_id', $client['id'])
