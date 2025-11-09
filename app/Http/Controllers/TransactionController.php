@@ -83,10 +83,13 @@ class TransactionController extends Controller
             'products.*' => 'exists:products,id'
         ]);
 
-        $client = Client::create([
-            'name' => $request->client['name'],
-            'email' => $request->client['email'],
-        ]);
+        $client = Client::where('email', '=', $request->client['email'])->first();
+        if(empty($client)) {
+            $client = Client::create([
+                'name' => $request->client['name'],
+                'email' => $request->client['email'],
+            ]);
+        }
 
         $total_amount = 0;
         foreach($request->products as $eachProduct) {
