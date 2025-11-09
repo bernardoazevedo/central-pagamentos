@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -15,6 +16,11 @@ class UserTest extends TestCase
 
     public function test_create_user_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $userValues = [
             'name' => 'New User Test',
             'email' => 'user@user.com',
@@ -35,6 +41,11 @@ class UserTest extends TestCase
 
     public function test_get_user_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $userValues = [
             'name' => 'New User Test',
             'email' => 'user@user.com',
@@ -55,6 +66,11 @@ class UserTest extends TestCase
 
     public function test_get_not_created_user_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $response = $this->json('delete', "api/user/100", [])
             ->assertStatus(Response::HTTP_NOT_FOUND);
     }
@@ -69,10 +85,15 @@ class UserTest extends TestCase
         ];
         $user = User::factory()->create($userValues);
 
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $response = $this->json('get', 'api/user', [])
             ->assertStatus(Response::HTTP_OK)
             ->assertJson(fn (AssertableJson $json) =>
-                $json->has(1)
+                $json->has(2)
                     ->first(fn (AssertableJson $json) =>
                         $json->where('id', $user->id)
                             ->where('name', $userValues['name'])
@@ -82,14 +103,13 @@ class UserTest extends TestCase
             );
     }
 
-    public function test_list_empty_users_request(): void
-    {
-        $response = $this->json('get', "api/user", [])
-            ->assertStatus(Response::HTTP_NOT_FOUND);
-    }
-
     public function test_update_user_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $userValues = [
             'name' => 'New User Test',
             'email' => 'user@user.com',
@@ -117,12 +137,22 @@ class UserTest extends TestCase
 
     public function test_update_not_created_user_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $response = $this->json('patch', "api/user/100", [])
             ->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
     public function test_delete_user_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $user = User::factory()->create();
 
         $response = $this->json('delete', "api/user/{$user->id}", [])
@@ -131,6 +161,11 @@ class UserTest extends TestCase
 
     public function test_delete_not_created_user_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $response = $this->json('delete', "api/user/100", [])
             ->assertStatus(Response::HTTP_NOT_FOUND);
     }

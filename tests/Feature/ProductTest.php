@@ -3,9 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class ProductTest extends TestCase
@@ -14,6 +16,11 @@ class ProductTest extends TestCase
 
     public function test_list_products_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $product = Product::factory()->create([
             'name' => 'Test Product',
             'amount' => 1999,
@@ -33,12 +40,22 @@ class ProductTest extends TestCase
 
     public function test_list_empty_products_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $response = $this->json('get', "api/product", [])
             ->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
     public function test_create_product_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $productValues = [
             'name' => 'New Product Test',
             'amount' => 5599,
@@ -55,6 +72,11 @@ class ProductTest extends TestCase
 
     public function test_get_product_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $productValues = [
             'name' => 'New Product Test',
             'amount' => 5599,
@@ -72,12 +94,22 @@ class ProductTest extends TestCase
 
     public function test_get_not_created_product_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $response = $this->json('get', "api/product/100", [])
             ->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
     public function test_update_product_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $productValues = [
             'name' => 'New Product Test',
             'amount' => 5599,
@@ -99,12 +131,22 @@ class ProductTest extends TestCase
 
     public function test_update_not_created_product_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $response = $this->json('patch', "api/product/100", [])
             ->assertStatus(Response::HTTP_NOT_FOUND);
     }
 
     public function test_delete_product_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $product = Product::factory()->create();
         $response = $this->json('delete', "api/product/{$product->id}", [])
             ->assertStatus(Response::HTTP_OK);
@@ -112,6 +154,11 @@ class ProductTest extends TestCase
 
     public function test_delete_not_created_product_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $response = $this->json('delete', "api/product/100", [])
             ->assertStatus(Response::HTTP_NOT_FOUND);
     }

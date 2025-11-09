@@ -3,9 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\Client;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class ClientTest extends TestCase
@@ -14,6 +16,11 @@ class ClientTest extends TestCase
 
     public function test_get_client_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $client = Client::factory()->create([
             'name' => 'A new client',
             'email' => "new@new.com",
@@ -31,6 +38,11 @@ class ClientTest extends TestCase
 
     public function test_list_clients_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $client = Client::factory()->create([
             'name' => 'Mr Test',
             'email' => "test@test.com",

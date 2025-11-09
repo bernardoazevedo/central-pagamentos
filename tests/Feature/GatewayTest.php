@@ -3,9 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\Gateway;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class GatewayTest extends TestCase
@@ -14,6 +16,11 @@ class GatewayTest extends TestCase
 
     public function test_update_gateway_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $gatewayValues = [
             'name' => 'Gateway Test',
             'class_name' => 'PagamentosCorp',
@@ -39,6 +46,11 @@ class GatewayTest extends TestCase
 
     public function test_update_gateway_status_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $gatewayValues = [
             'name' => 'Gateway Test',
             'class_name' => 'PagamentosCorp',
@@ -63,6 +75,11 @@ class GatewayTest extends TestCase
 
     public function test_update_gateway_priority_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $gatewayValues = [
             'name' => 'Gateway Test',
             'class_name' => 'PagamentosCorp',

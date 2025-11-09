@@ -7,9 +7,11 @@ use App\Models\Client;
 use App\Models\Gateway;
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
 use Illuminate\Testing\Fluent\AssertableJson;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class TransactionTest extends TestCase
@@ -18,6 +20,11 @@ class TransactionTest extends TestCase
 
     public function test_get_transaction_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $client = Client::factory()->create([
             'name' => 'A new client',
             'email' => "new@new.com",
@@ -55,6 +62,11 @@ class TransactionTest extends TestCase
 
     public function test_list_transactions_request(): void
     {
+        Passport::actingAs(
+            User::factory()->create(),
+            ['*']
+        );
+
         $client = Client::factory()->create([
             'name' => 'A new client',
             'email' => "new@new.com",
@@ -191,6 +203,11 @@ class TransactionTest extends TestCase
                         ->where('status', TransactionStatus::PAID)
                         ->where('amount', $product1->amount + $product2->amount)
                 );
+
+            Passport::actingAs(
+                User::factory()->create(),
+                ['*']
+            );
 
             // chargeback
             $response = $this->json('post', "api/transaction/{$response->original['id']}/chargeback", [])
