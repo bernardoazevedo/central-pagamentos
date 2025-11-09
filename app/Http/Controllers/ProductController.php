@@ -14,7 +14,7 @@ class ProductController extends Controller
         if(count($products) == 0) {
             return response()->json(['message' => 'No items stored'], Response::HTTP_NOT_FOUND);
         }
-        
+
         return response()->json($products, 200);
     }
 

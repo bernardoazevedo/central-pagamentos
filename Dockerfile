@@ -1,4 +1,4 @@
-FROM php:8.2.5-apache
+FROM php:8.3-apache
 
 ARG UID=1000
 ARG GID=1000
@@ -12,7 +12,7 @@ RUN apt-get update && \
     libpng-dev \
     libicu-dev \
     libpq-dev \
-    libmagickwand-dev 
+    libmagickwand-dev
 
 RUN docker-php-ext-install pdo_mysql zip exif pcntl bcmath gd
 

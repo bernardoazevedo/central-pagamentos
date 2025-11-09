@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Passport\Passport;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class ClientTest extends TestCase
@@ -16,7 +17,7 @@ class ClientTest extends TestCase
 
     public function test_get_client_request(): void
     {
-        Passport::actingAs(
+        Sanctum::actingAs(
             User::factory()->create(),
             ['*']
         );
@@ -38,7 +39,7 @@ class ClientTest extends TestCase
 
     public function test_list_clients_request(): void
     {
-        Passport::actingAs(
+        Sanctum::actingAs(
             User::factory()->create(),
             ['*']
         );

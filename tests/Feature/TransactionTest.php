@@ -12,6 +12,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Passport\Passport;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class TransactionTest extends TestCase
@@ -20,7 +21,7 @@ class TransactionTest extends TestCase
 
     public function test_get_transaction_request(): void
     {
-        Passport::actingAs(
+        Sanctum::actingAs(
             User::factory()->create(),
             ['*']
         );
@@ -62,7 +63,7 @@ class TransactionTest extends TestCase
 
     public function test_list_transactions_request(): void
     {
-        Passport::actingAs(
+        Sanctum::actingAs(
             User::factory()->create(),
             ['*']
         );
@@ -204,7 +205,7 @@ class TransactionTest extends TestCase
                         ->where('amount', $product1->amount + $product2->amount)
                 );
 
-            Passport::actingAs(
+            Sanctum::actingAs(
                 User::factory()->create(),
                 ['*']
             );

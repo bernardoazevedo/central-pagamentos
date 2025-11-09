@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Passport\Passport;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -16,7 +17,7 @@ class UserTest extends TestCase
 
     public function test_create_user_request(): void
     {
-        Passport::actingAs(
+        Sanctum::actingAs(
             User::factory()->create(),
             ['*']
         );
@@ -41,7 +42,7 @@ class UserTest extends TestCase
 
     public function test_get_user_request(): void
     {
-        Passport::actingAs(
+        Sanctum::actingAs(
             User::factory()->create(),
             ['*']
         );
@@ -66,7 +67,7 @@ class UserTest extends TestCase
 
     public function test_get_not_created_user_request(): void
     {
-        Passport::actingAs(
+        Sanctum::actingAs(
             User::factory()->create(),
             ['*']
         );
@@ -85,7 +86,7 @@ class UserTest extends TestCase
         ];
         $user = User::factory()->create($userValues);
 
-        Passport::actingAs(
+        Sanctum::actingAs(
             User::factory()->create(),
             ['*']
         );
@@ -105,7 +106,7 @@ class UserTest extends TestCase
 
     public function test_update_user_request(): void
     {
-        Passport::actingAs(
+        Sanctum::actingAs(
             User::factory()->create(),
             ['*']
         );
@@ -137,7 +138,7 @@ class UserTest extends TestCase
 
     public function test_update_not_created_user_request(): void
     {
-        Passport::actingAs(
+        Sanctum::actingAs(
             User::factory()->create(),
             ['*']
         );
@@ -148,7 +149,7 @@ class UserTest extends TestCase
 
     public function test_delete_user_request(): void
     {
-        Passport::actingAs(
+        Sanctum::actingAs(
             User::factory()->create(),
             ['*']
         );
@@ -161,7 +162,7 @@ class UserTest extends TestCase
 
     public function test_delete_not_created_user_request(): void
     {
-        Passport::actingAs(
+        Sanctum::actingAs(
             User::factory()->create(),
             ['*']
         );

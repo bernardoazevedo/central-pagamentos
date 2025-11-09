@@ -8,13 +8,11 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::post('/login', function () {
-    return ['message' => 'Unauthenticated.'];
-})->name('login');
+Route::post('/login', [UserController::class, 'login'])->name('login');
 
 Route::post('/transaction', [TransactionController::class, 'create'])->name('transaction.create');
 
-Route::middleware('auth:api')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::post('/product', [ProductController::class, 'create'])->name('product.create');
     Route::get('/product', [ProductController::class, 'index'])->name('product.index');
     Route::get('/product/{id}', [ProductController::class, 'get'])->name('product.get');
@@ -35,4 +33,6 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/user/{id}', [UserController::class, 'get'])->name('user.get');
     Route::patch('/user/{id}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/user/{id}', [UserController::class, 'delete'])->name('user.delete');
+
+    Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 });

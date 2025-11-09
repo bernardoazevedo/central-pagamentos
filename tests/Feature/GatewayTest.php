@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Laravel\Passport\Passport;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class GatewayTest extends TestCase
@@ -16,7 +17,7 @@ class GatewayTest extends TestCase
 
     public function test_update_gateway_request(): void
     {
-        Passport::actingAs(
+        Sanctum::actingAs(
             User::factory()->create(),
             ['*']
         );
@@ -46,7 +47,7 @@ class GatewayTest extends TestCase
 
     public function test_update_gateway_status_request(): void
     {
-        Passport::actingAs(
+        Sanctum::actingAs(
             User::factory()->create(),
             ['*']
         );
@@ -75,7 +76,7 @@ class GatewayTest extends TestCase
 
     public function test_update_gateway_priority_request(): void
     {
-        Passport::actingAs(
+        Sanctum::actingAs(
             User::factory()->create(),
             ['*']
         );
