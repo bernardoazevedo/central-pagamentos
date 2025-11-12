@@ -89,6 +89,11 @@ class UserController extends Controller
     public function delete($id)
     {
         $user = User::find($id);
+
+        if(auth()->user()->id == $id) {
+            return response()->json(['message' => "You can't delete yourself"], Response::HTTP_NOT_ACCEPTABLE);
+        }
+
         if($user) {
             $user->delete();
             return response()->json(['message' => "$id deleted"], Response::HTTP_OK);
