@@ -11,6 +11,9 @@ class ClientController extends Controller
     public function index()
     {
         $clients = Client::all(['id','name','email']);
+        if(count($clients) == 0) {
+            return response()->json(['message' => 'No items stored'], Response::HTTP_NOT_FOUND);
+        }
         return response()->json($clients, 200);
     }
 
