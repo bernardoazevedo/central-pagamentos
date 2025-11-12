@@ -11,7 +11,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Response;
 use Illuminate\Testing\Fluent\AssertableJson;
-use Laravel\Passport\Passport;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
