@@ -18,16 +18,5 @@ Status: `200`
 }
 ```
 
-# Erro
-
-Se não estiver logado, receberá uma mensagem informando que não está logado, com status `401`
-
-Status: `401`
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
 ---
 

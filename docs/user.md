@@ -104,12 +104,12 @@ Status: `200`
 
 ### Erro
 
-Se não estiver logado, receberá uma mensagem informando que não está logado, com status `401`
+Se não houver usuários cadastrados, será retornado status `404`, informando a situação.
 
-Status: `401`
+Status: `404`
 ```json
 {
-    "message": "Unauthenticated."
+    "message": "No items stored"
 }
 ```
 
@@ -147,15 +147,6 @@ Status: `404`
 ```json
 {
     "message": "ID not found"
-}
-```
-
-Se não estiver logado, receberá uma mensagem informando que não está logado, com status `401`
-
-Status: `401`
-```json
-{
-    "message": "Unauthenticated."
 }
 ```
 
