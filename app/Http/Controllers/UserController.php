@@ -18,7 +18,7 @@ class UserController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|max:255|email|unique:users,email',
             'password' => ['required', 'string', Password::defaults(), 'confirmed'],
-            'role' => [Rule::enum(Role::class)],
+            'role' => ['required', Rule::enum(Role::class)],
         ]);
 
         $user = User::create($request->toArray());
