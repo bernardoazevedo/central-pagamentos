@@ -3,6 +3,7 @@
 namespace App\Gateways\Services;
 
 use App\Gateways\AbstractGateway;
+use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 
@@ -55,7 +56,7 @@ class PaymentsEnterprise extends AbstractGateway
         ]);
 
         if($response->status() != Response::HTTP_CREATED) {
-            return false;
+            throw new Exception("Error at chargeback response");
         }
         return true;
     }

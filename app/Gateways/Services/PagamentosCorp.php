@@ -3,6 +3,7 @@
 namespace App\Gateways\Services;
 
 use App\Gateways\AbstractGateway;
+use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 
@@ -50,7 +51,7 @@ class PagamentosCorp extends AbstractGateway
     {
         $response = Http::withToken($this->token)->post($this->url."/transactions/$external_id/charge_back", []);
         if($response->status() != Response::HTTP_CREATED) {
-            return false;
+            throw new Exception("Error at chargeback response");
         }
         return true;
     }
