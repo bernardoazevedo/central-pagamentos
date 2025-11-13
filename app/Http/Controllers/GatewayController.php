@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Gateway;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class GatewayController extends Controller
 {
@@ -15,6 +16,9 @@ class GatewayController extends Controller
         ]);
 
         $gateway = Gateway::find($id);
+        if(empty($gateway)) {
+            return response()->json(['message' => 'ID not found'], Response::HTTP_NOT_FOUND);
+        }
 
         if(isset($request->is_active)) {
             $gateway->is_active = $request->is_active;
