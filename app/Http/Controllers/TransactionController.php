@@ -80,6 +80,7 @@ class TransactionController extends Controller
             'client.email' => 'required|string|max:255|email',
             'payment_info.card_numbers' => 'required|string|size:16',
             'payment_info.cvv' => 'required|string|size:3',
+            'products' => 'required',
             'products.*' => 'exists:products,id'
         ]);
 
@@ -99,21 +100,29 @@ class TransactionController extends Controller
 
         $usedGateway = '';
         $activeGateways = Gateway::where('is_active', '=', 1)->orderBy('priority')->get();
+        $external_id = '';
         foreach($activeGateways as $eachGateway) {
             $reflection = new ReflectionClass("App\Gateways\Services\\".$eachGateway->class_name);
             $gateway = $reflection->newInstance();
-            $gateway->login();
-            $external_id = $gateway->sendTransaction([
-                'name' => $request->client['name'],
-                'email' => $request->client['email'],
-                'amount' => $total_amount,
-                'card_numbers' => $request->payment_info['card_numbers'],
-                'cvv' => $request->payment_info['cvv'],
-            ]);
-            if($external_id) {
-                $usedGateway = $eachGateway;
-                break;
+            try {
+                $gateway->login();
+                $external_id = $gateway->sendTransaction([
+                    'name' => $request->client['name'],
+                    'email' => $request->client['email'],
+                    'amount' => $total_amount,
+                    'card_numbers' => $request->payment_info['card_numbers'],
+                    'cvv' => $request->payment_info['cvv'],
+                ]);
+                if($external_id) {
+                    $usedGateway = $eachGateway;
+                    break;
+                }
+            } catch(\Exception $e) {
+                // Going to next payment gateway
             }
+        }
+        if(!$external_id) {
+            return response()->json(['message' => 'Error at payment, try again in a few moments'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         $transaction = Transaction::create([
@@ -151,8 +160,10 @@ class TransactionController extends Controller
         $reflection = new ReflectionClass("App\Gateways\Services\\".$gateway->class_name);
         $gateway = $reflection->newInstance();
 
-        $gateway->login();
-        if(!$gateway->chargeback($transaction->external_id)) {
+        try {
+            $gateway->login();
+            $gateway->chargeback($transaction->external_id);
+        } catch(\Exception $e) {
             return response()->json(['message' => 'Error at chargeback, try again in a few moments'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
