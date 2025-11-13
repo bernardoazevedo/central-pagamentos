@@ -34,6 +34,6 @@ class GatewayController extends Controller
             "name" => $gateway->name,
             "is_active" => boolval($gateway->is_active),
             "priority" => $gateway->priority,
-        ], 200);
+        ], Response::HTTP_OK);
     }
 }
