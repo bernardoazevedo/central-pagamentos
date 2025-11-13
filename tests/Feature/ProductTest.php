@@ -17,7 +17,7 @@ class ProductTest extends TestCase
     public function test_list_products_request(): void
     {
         Sanctum::actingAs(
-            User::factory()->create(),
+            User::factory()->create(['role' => 'MANAGER']),
             ['*']
         );
 
@@ -41,7 +41,7 @@ class ProductTest extends TestCase
     public function test_list_empty_products_request(): void
     {
         Sanctum::actingAs(
-            User::factory()->create(),
+            User::factory()->create(['role' => 'MANAGER']),
             ['*']
         );
 
@@ -52,7 +52,7 @@ class ProductTest extends TestCase
     public function test_create_product_request(): void
     {
         Sanctum::actingAs(
-            User::factory()->create(),
+            User::factory()->create(['role' => 'MANAGER']),
             ['*']
         );
 
@@ -73,7 +73,7 @@ class ProductTest extends TestCase
     public function test_get_product_request(): void
     {
         Sanctum::actingAs(
-            User::factory()->create(),
+            User::factory()->create(['role' => 'MANAGER']),
             ['*']
         );
 
@@ -95,7 +95,7 @@ class ProductTest extends TestCase
     public function test_get_not_created_product_request(): void
     {
         Sanctum::actingAs(
-            User::factory()->create(),
+            User::factory()->create(['role' => 'MANAGER']),
             ['*']
         );
 
@@ -106,7 +106,7 @@ class ProductTest extends TestCase
     public function test_update_product_request(): void
     {
         Sanctum::actingAs(
-            User::factory()->create(),
+            User::factory()->create(['role' => 'MANAGER']),
             ['*']
         );
 
@@ -132,7 +132,7 @@ class ProductTest extends TestCase
     public function test_update_not_created_product_request(): void
     {
         Sanctum::actingAs(
-            User::factory()->create(),
+            User::factory()->create(['role' => 'MANAGER']),
             ['*']
         );
 
@@ -143,7 +143,7 @@ class ProductTest extends TestCase
     public function test_delete_product_request(): void
     {
         Sanctum::actingAs(
-            User::factory()->create(),
+            User::factory()->create(['role' => 'MANAGER']),
             ['*']
         );
 
@@ -155,7 +155,7 @@ class ProductTest extends TestCase
     public function test_delete_not_created_product_request(): void
     {
         Sanctum::actingAs(
-            User::factory()->create(),
+            User::factory()->create(['role' => 'MANAGER']),
             ['*']
         );
 

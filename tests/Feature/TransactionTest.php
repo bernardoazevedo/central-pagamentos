@@ -205,7 +205,7 @@ class TransactionTest extends TestCase
                 );
 
             Sanctum::actingAs(
-                User::factory()->create(),
+                User::factory()->create(['role' => 'FINANCE']),
                 ['*']
             );
 

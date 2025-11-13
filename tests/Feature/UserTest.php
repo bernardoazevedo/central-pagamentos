@@ -17,7 +17,7 @@ class UserTest extends TestCase
     public function test_create_user_request(): void
     {
         Sanctum::actingAs(
-            User::factory()->create(),
+            User::factory()->create(['role' => 'MANAGER']),
             ['*']
         );
 
@@ -42,7 +42,7 @@ class UserTest extends TestCase
     public function test_get_user_request(): void
     {
         Sanctum::actingAs(
-            User::factory()->create(),
+            User::factory()->create(['role' => 'MANAGER']),
             ['*']
         );
 
@@ -67,7 +67,7 @@ class UserTest extends TestCase
     public function test_get_not_created_user_request(): void
     {
         Sanctum::actingAs(
-            User::factory()->create(),
+            User::factory()->create(['role' => 'MANAGER']),
             ['*']
         );
 
@@ -86,7 +86,7 @@ class UserTest extends TestCase
         $user = User::factory()->create($userValues);
 
         Sanctum::actingAs(
-            User::factory()->create(),
+            User::factory()->create(['role' => 'MANAGER']),
             ['*']
         );
 
@@ -106,7 +106,7 @@ class UserTest extends TestCase
     public function test_update_user_request(): void
     {
         Sanctum::actingAs(
-            User::factory()->create(),
+            User::factory()->create(['role' => 'MANAGER']),
             ['*']
         );
 
@@ -138,7 +138,7 @@ class UserTest extends TestCase
     public function test_update_not_created_user_request(): void
     {
         Sanctum::actingAs(
-            User::factory()->create(),
+            User::factory()->create(['role' => 'MANAGER']),
             ['*']
         );
 
@@ -149,7 +149,7 @@ class UserTest extends TestCase
     public function test_delete_user_request(): void
     {
         Sanctum::actingAs(
-            User::factory()->create(),
+            User::factory()->create(['role' => 'MANAGER']),
             ['*']
         );
 
@@ -162,7 +162,7 @@ class UserTest extends TestCase
     public function test_delete_not_created_user_request(): void
     {
         Sanctum::actingAs(
-            User::factory()->create(),
+            User::factory()->create(['role' => 'MANAGER']),
             ['*']
         );
 
