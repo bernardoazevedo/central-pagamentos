@@ -1,3 +1,5 @@
+# Gateways
+
 ## Editar gateway
 
 URL: `http://localhost/api/gateway/{id}`

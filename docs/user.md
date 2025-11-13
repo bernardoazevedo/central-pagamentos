@@ -1,3 +1,5 @@
+# Usuários
+
 ## Criar usuário
 
 URL: `http://localhost/api/user`
