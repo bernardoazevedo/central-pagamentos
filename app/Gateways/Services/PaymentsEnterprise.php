@@ -2,12 +2,12 @@
 
 namespace App\Gateways\Services;
 
-use App\Gateways\AbstractGateway;
+use App\Gateways\GatewayInterface;
 use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 
-class PaymentsEnterprise extends AbstractGateway
+class PaymentsEnterprise implements GatewayInterface
 {
     public string $url;
     public string $username;
