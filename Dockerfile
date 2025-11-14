@@ -22,11 +22,11 @@ RUN pecl install pcov && docker-php-ext-enable pcov
 # configurando grupo e usuário
 RUN if getent group ${GID}; then \
       group_name=$(getent group ${GID} | cut -d: -f1); \
-      useradd -m -u ${UID} -g ${GID} -s /bin/bash www; \
+      useradd -m -u ${UID} -g ${GID} -s /bin/bash www-data; \
     else \
-      groupadd -g ${GID} www && \
-      useradd -m -u ${UID} -g www -s /bin/bash www; \
-      group_name=www; \
+      groupadd -g ${GID} www-data && \
+      useradd -m -u ${UID} -g www-data -s /bin/bash www-data; \
+      group_name=www-data; \
     fi
 
 
