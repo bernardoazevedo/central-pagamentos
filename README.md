@@ -22,6 +22,10 @@ docker compose up
 ```sh
 docker exec -it central-pagamentos-app bash
 ```
+- Gere as chaves de criptografia com: 
+```sh
+php artisan key:generate
+```
 - Faça a migração do banco de dados com: 
 ```sh
 php artisan migrate
