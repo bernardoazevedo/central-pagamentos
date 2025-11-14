@@ -47,9 +47,10 @@ class PagamentosCorp implements GatewayInterface
         return $response['id'];
     }
 
-    public function listTransactions()
+    public function getTransactions()
     {
-
+        $response = Http::withToken($this->token)->get($this->url."/transactions", []);
+        return $response['data'];
     }
 
     public function chargeback(string $external_id): bool

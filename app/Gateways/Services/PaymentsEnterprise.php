@@ -46,9 +46,13 @@ class PaymentsEnterprise implements GatewayInterface
         return $response['id'];
     }
 
-    public function listTransactions()
+    public function getTransactions()
     {
-
+        $response = Http::withHeaders([
+            'Gateway-Auth-Token' => $this->username,
+            'Gateway-Auth-Secret' => $this->password,
+        ])->get($this->url."/transacoes");
+        return $response['data'];
     }
 
     public function chargeback(string $external_id)

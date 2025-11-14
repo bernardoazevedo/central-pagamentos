@@ -34,6 +34,7 @@ Route::middleware(['auth:sanctum', 'checkRole:ADMIN,MANAGER,FINANCE'])->group(fu
 
 Route::middleware(['auth:sanctum', 'checkRole:ADMIN,FINANCE'])->group(function () {
     Route::post('/transaction/{id}/chargeback', [TransactionController::class, 'chargeback'])->name('transaction.chargeback');
+    Route::get('/gateway/{id}', [GatewayController::class, 'index'])->name('transaction.index');
 });
 
 Route::middleware(['auth:sanctum', 'checkRole:ADMIN,USER'])->group(function () {
