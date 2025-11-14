@@ -12,6 +12,7 @@ use App\Models\TransactionProduct;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use ReflectionClass;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class TransactionController extends Controller
 {
@@ -117,6 +118,9 @@ class TransactionController extends Controller
                     $usedGateway = $eachGateway;
                     break;
                 }
+            } catch(BadRequestHttpException $e) {
+                return response()->json(['message' => "Error: {$e->getMessage()}"], Response::HTTP_BAD_REQUEST);
+
             } catch(\Exception $e) {
                 // Going to next payment gateway
             }

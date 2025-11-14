@@ -6,6 +6,7 @@ use App\Gateways\GatewayInterface;
 use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class PaymentsEnterprise implements GatewayInterface
 {
@@ -38,6 +39,10 @@ class PaymentsEnterprise implements GatewayInterface
             'numeroCartao' => $transaction['card_numbers'],
             'cvv' => $transaction['cvv'],
         ]);
+
+        if($response->status() != Response::HTTP_CREATED) {
+            throw new BadRequestHttpException("The card information provided is invalid");
+        }
         return $response['id'];
     }
 
