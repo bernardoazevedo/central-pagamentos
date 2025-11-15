@@ -207,3 +207,11 @@ Status: `404`
     "message": "ID not found"
 }
 ```
+
+Se o produto estiver vinculado a uma compra, será retornado status ``406`.  
+Status: `406`
+```json
+{
+    "message": "This product is being used in a transaction, you can't delete it"
+}
+```

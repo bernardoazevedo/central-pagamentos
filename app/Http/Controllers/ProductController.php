@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\TransactionProduct;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -75,6 +76,13 @@ class ProductController extends Controller
         $product = Product::find($id);
         if(empty($product)) {
             return response()->json(['message' => 'ID not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $transactionProducts = TransactionProduct::where('products_id', $product['id'])
+            ->select(['products_id as id', 'quantity'])
+            ->get();
+        if(count($transactionProducts) > 0) {
+            return response()->json(['message' => "This product is being used in a transaction, you can't delete it"], Response::HTTP_NOT_ACCEPTABLE);
         }
 
         $product->delete();
