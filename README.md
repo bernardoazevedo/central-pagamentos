@@ -42,4 +42,4 @@ php artisan db:seed
 - Portanto, para cadastrar um novo gateway, você deve criar uma nova classe em `App\Gateways\Services` e implementar a interface `App\Gateways\GatewayInterface`.
 - Após isso, você deve cadastrar esse gateway no banco de dados informando seu nome, status (ativo ou não), prioridade e nome da classe (deve ser exatamente o mesmo nome da classe criada).
 - URL e credenciais de acesso do gateway devem ser adicionados ao `.env`.
-- É importante adicionar o novo gateway nos testes, para isso, você deve deve adicioná-lo após os gateways já registrados em cada teste e adicionar a URL e credenciais no `.env.example`.
+- É importante adicionar o novo gateway nos testes, para isso, você deve deve adicioná-lo após os gateways já registrados em cada teste e adicionar a URL e credenciais no `.env.testing`.
