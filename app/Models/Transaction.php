@@ -23,4 +23,15 @@ class Transaction extends Model
         'amount',
         'card_last_numbers',
     ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'external_id',
+        'gateways_id',
+        'card_last_numbers',
+    ];
 }

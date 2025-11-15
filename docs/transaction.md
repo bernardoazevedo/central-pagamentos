@@ -17,13 +17,63 @@ Status: `200`
 [
     {
         "id": 1,
-        "name": "client Name",
-        "amount": 2000
+        "status": "PAID",
+        "amount": 493895,
+        "client": {
+            "id": 1,
+            "name": "José Santos",
+            "email": "jose@jose.com"
+        },
+        "products": [
+            {
+                "id": 1,
+                "name": "Ball",
+                "amount": 16255,
+                "quantity": 2
+            },
+            {
+                "id": 2,
+                "name": "Doll",
+                "amount": 92277,
+                "quantity": 5
+            }
+        ]
     },
     {
         "id": 2,
-        "name": "client Name",
-        "amount": 4050
+        "status": "PAID",
+        "amount": 493895,
+        "client": {
+            "id": 1,
+            "name": "João Silva",
+            "email": "joao@joao.com"
+        },
+        "products": [
+            {
+                "id": 1,
+                "name": "Ball",
+                "amount": 16255,
+                "quantity": 2
+            },
+            {
+                "id": 2,
+                "name": "Doll",
+                "amount": 92277,
+                "quantity": 5
+            },
+            {
+                "id": 1,
+                "name": "Ball",
+                "amount": 16255,
+                "quantity": 2
+            },
+            {
+                "id": 2,
+                "name": "Doll",
+                "amount": 92277,
+                "quantity": 5
+            }
+        ]
     }
 ]
 ```
@@ -54,11 +104,27 @@ Se tudo correr bem, a API listará a transação identificada pelo ID informado,
 Status: `200`
 ```json
 {
-    "id": 3,
-    "name": "Client Name",
-    "email": "client@client.com",
-    "transactions": [
-
+    "id": 2,
+    "status": "PAID",
+    "amount": 493895,
+    "client": {
+        "id": 1,
+        "name": "João Silva",
+        "email": "joao@joao.com"
+    },
+    "products": [
+        {
+            "id": 1,
+            "name": "Ball",
+            "amount": 16255,
+            "quantity": 2
+        },
+        {
+            "id": 2,
+            "name": "Doll",
+            "amount": 92277,
+            "quantity": 5
+        }
     ]
 }
 ```
@@ -93,7 +159,14 @@ Request Body:
         "cvv": "123"
     },
     "products": [
-        3, 4, 5
+        {
+            "id": 1,
+            "quantity": 2
+        },
+        {
+            "id": 2,
+            "quantity": 5
+        }
     ]
 }
 ```

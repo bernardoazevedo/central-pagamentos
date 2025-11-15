@@ -50,12 +50,9 @@ class TransactionTest extends TestCase
             ->assertStatus(Response::HTTP_OK)
             ->assertJson(fn (AssertableJson $json) =>
                 $json->where('id', $transaction->id)
-                    ->where('external_id', $transactionValues['external_id'])
                     ->where('status', $transactionValues['status'])
                     ->where('amount', $transactionValues['amount'])
-                    ->where('card_last_numbers', $transactionValues['card_last_numbers'])
                     ->has('client')
-                    ->has('gateway')
                     ->has('products')
             );
     }
@@ -94,12 +91,9 @@ class TransactionTest extends TestCase
                 $json->has(1)
                     ->first(fn (AssertableJson $json) =>
                         $json->where('id', $transaction->id)
-                            ->where('external_id', $transactionValues['external_id'])
                             ->where('status', $transactionValues['status'])
                             ->where('amount', $transactionValues['amount'])
-                            ->where('card_last_numbers', $transactionValues['card_last_numbers'])
                             ->has('client')
-                            ->has('gateway')
                             ->has('products')
                     )
             );
@@ -119,16 +113,22 @@ class TransactionTest extends TestCase
                 'priority' => 1,
             ]
         ];
+
+        $product1 = Product::factory()->create([
+            'name' => 'First Product',
+            'amount' => 2000,
+        ]);
+        $product1->quantity = 2;
+
+        $product2 = Product::factory()->create([
+            'name' => 'Second Product',
+            'amount' => 5500,
+        ]);
+        $product2->quantity = 5;
+
         foreach($gatewayValues as $eachGateway) {
             $gateway = Gateway::factory()->create($eachGateway);
-            $product1 = Product::factory()->create([
-                'name' => 'First Product',
-                'amount' => 2000,
-            ]);
-            $product2 = Product::factory()->create([
-                'name' => 'Second Product',
-                'amount' => 5500,
-            ]);
+
 
             $transactionValues = [
                 'client' => [
@@ -140,8 +140,14 @@ class TransactionTest extends TestCase
                     'cvv' => '123',
                 ],
                 'products' => [
-                    $product1->id,
-                    $product2->id,
+                    [
+                        'id' => $product1->id,
+                        'quantity' => $product1->quantity,
+                    ],
+                    [
+                        'id' => $product2->id,
+                        'quantity' => $product2->quantity,
+                    ],
                 ],
             ];
 
@@ -150,7 +156,7 @@ class TransactionTest extends TestCase
                 ->assertJson(fn (AssertableJson $json) =>
                     $json->has('id')
                         ->where('status', TransactionStatus::PAID)
-                        ->where('amount', $product1->amount + $product2->amount)
+                        ->where('amount', ($product1->amount * $product1->quantity) + ($product2->amount * $product2->quantity))
                 );
         }
     }
@@ -169,16 +175,20 @@ class TransactionTest extends TestCase
                 'priority' => 1,
             ]
         ];
+        $product1 = Product::factory()->create([
+            'name' => 'First Product',
+            'amount' => 2000,
+        ]);
+        $product1->quantity = 2;
+
+        $product2 = Product::factory()->create([
+            'name' => 'Second Product',
+            'amount' => 5500,
+        ]);
+        $product2->quantity = 5;
+
         foreach($gatewayValues as $eachGateway) {
             $gateway = Gateway::factory()->create($eachGateway);
-            $product1 = Product::factory()->create([
-                'name' => 'First Product',
-                'amount' => 2000,
-            ]);
-            $product2 = Product::factory()->create([
-                'name' => 'Second Product',
-                'amount' => 5500,
-            ]);
 
             $transactionValues = [
                 'client' => [
@@ -190,8 +200,14 @@ class TransactionTest extends TestCase
                     'cvv' => '123',
                 ],
                 'products' => [
-                    $product1->id,
-                    $product2->id,
+                    [
+                        'id' => $product1->id,
+                        'quantity' => $product1->quantity,
+                    ],
+                    [
+                        'id' => $product2->id,
+                        'quantity' => $product2->quantity,
+                    ],
                 ],
             ];
 
@@ -201,7 +217,7 @@ class TransactionTest extends TestCase
                 ->assertJson(fn (AssertableJson $json) =>
                     $json->has('id')
                         ->where('status', TransactionStatus::PAID)
-                        ->where('amount', $product1->amount + $product2->amount)
+                        ->where('amount', ($product1->amount * $product1->quantity) + ($product2->amount * $product2->quantity))
                 );
 
             Sanctum::actingAs(
@@ -215,7 +231,7 @@ class TransactionTest extends TestCase
                 ->assertJson(fn (AssertableJson $json) =>
                     $json->has('id')
                         ->where('status', TransactionStatus::CHARGED_BACK)
-                        ->where('amount', $product1->amount + $product2->amount)
+                        ->where('amount', ($product1->amount * $product1->quantity) + ($product2->amount * $product2->quantity))
                 );
         }
     }

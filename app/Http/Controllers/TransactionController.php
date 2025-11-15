@@ -21,26 +21,25 @@ class TransactionController extends Controller
         $transactions = Transaction::all([
             'id',
             'clients_id',
-            'gateways_id',
-            'external_id',
             'status',
             'amount',
-            'card_last_numbers',
         ]);
 
+        $productsArray = [];
         foreach($transactions as $transactionKey => $eachTransaction) {
             $transactions[$transactionKey]['client'] = Client::find($eachTransaction['clients_id'], ['id', 'name', 'email']);
             unset($transactions[$transactionKey]['clients_id']);
 
-            $transactions[$transactionKey]['gateway'] = Gateway::find($eachTransaction['gateways_id'], ['id', 'name']);
-            unset($transactions[$transactionKey]['gateways_id']);
-
-            $transactions[$transactionKey]['products'] = TransactionProduct::where('transactions_id', $transactions[$transactionKey]['id'])
-                ->select('products_id as id')
+            $transactionProducts = TransactionProduct::where('transactions_id', $eachTransaction['id'])
+                ->select(['products_id as id', 'quantity'])
                 ->get();
-            foreach($transactions[$transactionKey]['products'] as $productKey => $eachProduct) {
-                $transactions[$transactionKey]['products'][$productKey] = Product::find($eachProduct['id'], ['id', 'name', 'amount']);
+
+            foreach($transactionProducts as $key => $eachProduct) {
+                $product = Product::find($eachProduct['id'], ['id', 'name', 'amount']);
+                $product->quantity = $eachProduct['quantity'];
+                $productsArray[] = $product;
             }
+            $transactions[$transactionKey]['products'] = $productsArray;
         }
 
         return response()->json($transactions, 200);
@@ -51,25 +50,24 @@ class TransactionController extends Controller
         $transaction = Transaction::find($id, [
             'id',
             'clients_id',
-            'gateways_id',
-            'external_id',
             'status',
             'amount',
-            'card_last_numbers'
         ]);
 
         $transaction['client'] = Client::find($transaction['clients_id'], ['id', 'name', 'email']);
         unset($transaction['clients_id']);
 
-        $transaction['gateway'] = Gateway::find($transaction['gateways_id'], ['id', 'name']);
-        unset($transaction['gateways_id']);
-
-        $transaction['products'] = TransactionProduct::where('transactions_id', $transaction['id'])
-            ->select('products_id as id')
+        $transactionProducts = TransactionProduct::where('transactions_id', $transaction['id'])
+            ->select(['products_id as id', 'quantity'])
             ->get();
-        foreach($transaction['products'] as $key => $eachProduct) {
-            $transaction['products'][$key] = Product::find($eachProduct['id'], ['id', 'name', 'amount']);
+
+        $productsArray = [];
+        foreach($transactionProducts as $key => $eachProduct) {
+            $product = Product::find($eachProduct['id'], ['id', 'name', 'amount']);
+            $product->quantity = $eachProduct['quantity'];
+            $productsArray[] = $product;
         }
+        $transaction['products'] = $productsArray;
 
         return response()->json($transaction, 200);
     }
@@ -82,7 +80,8 @@ class TransactionController extends Controller
             'payment_info.card_numbers' => 'required|string|size:16',
             'payment_info.cvv' => 'required|string|size:3',
             'products' => 'required',
-            'products.*' => 'exists:products,id'
+            'products.*.id' => 'required|exists:products,id',
+            'products.*.quantity' => 'required|integer'
         ]);
 
         $client = Client::where('email', '=', $request->client['email'])->first();
@@ -95,8 +94,8 @@ class TransactionController extends Controller
 
         $total_amount = 0;
         foreach($request->products as $eachProduct) {
-            $eachProduct = Product::find($eachProduct);
-            $total_amount += $eachProduct->amount;
+            $productFound = Product::find($eachProduct['id']);
+            $total_amount += $productFound->amount * $eachProduct['quantity'];
         }
 
         $usedGateway = '';
@@ -141,7 +140,8 @@ class TransactionController extends Controller
         foreach($request->products as $eachProduct) {
             TransactionProduct::create([
                 'transactions_id' => $transaction->id,
-                'products_id' => $eachProduct,
+                'products_id' => $eachProduct['id'],
+                'quantity' => $eachProduct['quantity']
             ]);
         }
 
