@@ -1,3 +1,13 @@
+# Teste Prático Back-end BeTalent
+
+O desafio é baseado em desenvolver uma API que deve se conectar a dois gateways de pagamento e registrar compras. Os gateways são ordenados por prioridade, então em caso de falha no primeiro gateway, deve-se tentar registrar a compra no próximo. 
+
+## Tecnologias utilizadas:
+- PHP 8.3
+- Laravel 12
+- MySQL 8.0
+- Docker
+
 ## Documentação de rotas da API:
 
 - [Acesso](docs/acesso.md)
@@ -6,6 +16,7 @@
 - [Product](docs/product.md)
 - [Transaction](docs/transaction.md)
 - [User](docs/user.md)
+- [Coleção de rotas do Postman em JSON](docs/central_pagamentos_postman.json)
 
 ## Instalação
 
@@ -35,6 +46,11 @@ php artisan migrate
 php artisan db:seed
 ```
 - Será cadastrado um usuário administrador com e-mail `admin@admin.com` e senha `admin123`, use essas informações para fazer o primeiro login.
+- Rode os testes para certificar-se de que está tudo funcionando: 
+```sh
+php artisan test
+```
+- Para agilizar os testes das rotas criadas, a coleção de rotas utilizada durante o desenvolvimento foi exportada e salva em [central_pagamentos_postman.json](docs/central_pagamentos_postman.json). Para utilizar, baixe o JSON e importe dentro do Postman.
 
 ## Cadastrar novo gateway de pagamento
 
