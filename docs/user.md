@@ -4,10 +4,10 @@
 
 ## Criar usuário
 
-URL: `http://localhost/api/user`
-Método: `POST` 
-Autenticação: `Sim`
-Forma de autenticação: `Bearer Token`
+URL: `http://localhost/api/user`  
+Método: `POST`   
+Autenticação: `Sim`  
+Forma de autenticação: `Bearer Token`  
 Request Body:
 ```json
 {
@@ -19,14 +19,10 @@ Request Body:
 }
 ```
 
-Resposta:
-
 ### Sucesso
 
-Se tudo correr bem, a API retornará status `201` e os dados do usuário, com exceção da senha.
-
+Se tudo correr bem, a API retornará status `201` e os dados do usuário, com exceção da senha.  
 Status: `201`
-
 ```json
 {
     "id": 4,
@@ -38,12 +34,8 @@ Status: `201`
 
 ### Erro
 
-Caso algum campo esteja faltando no corpo da requisição, será retornada uma mensagem informando qual campo está faltando, com status `422`.
-
-Exemplo:
-
+Caso algum campo esteja faltando no corpo da requisição, será retornada uma mensagem informando qual campo está faltando, com status `422`.  
 Status: `422`
-
 ```json
 {
     "message": "The name field is required. (and 1 more error)",
@@ -58,8 +50,7 @@ Status: `422`
 }
 ```
 
-Caso já exista algum usuário com o e-mail informado, o erro será informado, também retornando status `422`.
-
+Caso já exista algum usuário com o e-mail informado, o erro será informado, também retornando status `422`.  
 Status: `422`
 ```json
 {
@@ -76,19 +67,15 @@ Status: `422`
 
 ## Listar usuários
 
-URL: `http://localhost/api/user`
-Método: `GET` 
-Autenticação: `Sim`
-Forma de autenticação: `Bearer Token`
-
-Resposta:
+URL: `http://localhost/api/user`  
+Método: `GET`  
+Autenticação: `Sim`  
+Forma de autenticação: `Bearer Token`  
 
 ### Sucesso
 
-Se tudo correr bem, a API listará os usuários retornando status `200`.
-
+Se tudo correr bem, a API listará os usuários retornando status `200`.  
 Status: `200`
-
 ```json
 [
     {
@@ -108,8 +95,7 @@ Status: `200`
 
 ### Erro
 
-Se não houver usuários cadastrados, será retornado status `404`, informando a situação.
-
+Se não houver usuários cadastrados, será retornado status `404`, informando a situação.  
 Status: `404`
 ```json
 {
@@ -121,18 +107,15 @@ Status: `404`
 
 ## Buscar usuário
 
-URL: `http://localhost/api/user/{id}`
-Método: `GET` 
-Autenticação: `Sim`
-Forma de autenticação: `Bearer Token`
-Parâmetros da rota: `id` do usuário
-
-Resposta:
+URL: `http://localhost/api/user/{id}`  
+Método: `GET`  
+Autenticação: `Sim`  
+Forma de autenticação: `Bearer Token`  
+Parâmetros da rota: `id` do usuário  
 
 ### Sucesso
 
-Se tudo correr bem, a API listará o usuário identificado pelo ID informado, retornando status `200`.
-
+Se tudo correr bem, a API listará o usuário identificado pelo ID informado, retornando status `200`.  
 Status: `200`
 ```json
 {
@@ -145,8 +128,7 @@ Status: `200`
 
 ### Erro
 
-Se o `id` não for encontrado, será retornado status `404` com uma mensagem informando a situação.
-
+Se o `id` não for encontrado, será retornado status `404` com uma mensagem informando a situação.  
 Status: `404`
 ```json
 {
@@ -158,11 +140,11 @@ Status: `404`
 
 ## Editar usuário
 
-URL: `http://localhost/api/user/{id}`
-Método: `PATCH` 
-Autenticação: `Sim`
-Forma de autenticação: `Bearer Token`
-Parâmetros da rota: `id` do usuário
+URL: `http://localhost/api/user/{id}`  
+Método: `PATCH`  
+Autenticação: `Sim`  
+Forma de autenticação: `Bearer Token`  
+Parâmetros da rota: `id` do usuário  
 Request Body:
 ```json
 {
@@ -174,9 +156,8 @@ Request Body:
 }
 ```
 
-Observações: 
-- Não é necessário enviar no body todos os dados para editar um usuário, você pode enviar apenas o campo que deseja atualizar.
-Exemplo:
+**Observações:** 
+- Não é necessário enviar no body todos os dados para editar um usuário, você pode enviar apenas o campo que deseja atualizar. Exemplo:
 ```json
 {
     "name": "User"
@@ -193,14 +174,10 @@ Exemplo:
 ```
 
 
-Resposta:
-
 ### Sucesso
 
-Se tudo correr bem, a API retornará status `200` e os dados do usuário, com exceção da senha.
-
+Se tudo correr bem, a API retornará status `200` e os dados do usuário, com exceção da senha.  
 Status: `200`
-
 ```json
 {
     "id": 4,
@@ -212,9 +189,7 @@ Status: `200`
 
 ### Erro
 
-Caso você envie `password` e não envie `password_confirmation`, será informado o erro, com status `422`.
-
-Exemplo:
+Caso você envie `password` e não envie `password_confirmation`, será informado o erro, com status `422`.  
 Status: `422`
 ```json
 {
@@ -227,8 +202,7 @@ Status: `422`
 }
 ```
 
-Caso já exista algum usuário com o e-mail informado, o erro será informado, também retornando status `422`.
-
+Caso já exista algum usuário com o e-mail informado, o erro será informado, também retornando status `422`.  
 Status: `422`
 ```json
 {
@@ -241,8 +215,7 @@ Status: `422`
 }
 ```
 
-Se o `id` não for encontrado, será retornado status `404` com uma mensagem informando a situação.
-
+Se o `id` não for encontrado, será retornado status `404` com uma mensagem informando a situação.  
 Status: `404`
 ```json
 {
@@ -254,21 +227,17 @@ Status: `404`
 
 ## Excluir usuário
 
-URL: `http://localhost/api/user/{id}`
-Método: `DELETE` 
-Autenticação: `Sim`
-Forma de autenticação: `Bearer Token`
-Parâmetros da rota: `id` do usuário
+URL: `http://localhost/api/user/{id}`  
+Método: `DELETE`  
+Autenticação: `Sim`  
+Forma de autenticação: `Bearer Token`  
+Parâmetros da rota: `id` do usuário  
 
-
-Resposta:
 
 ### Sucesso
 
-Se tudo correr bem, a API retornará status `200` e o id do usuário excluído.
-
+Se tudo correr bem, a API retornará status `200` e o id do usuário excluído.  
 Status: `200`
-
 ```json
 {
     "message": "3 deleted"
@@ -277,8 +246,7 @@ Status: `200`
 
 ### Erro
 
-Se o `id` não for encontrado, será retornado status `404` com uma mensagem informando a situação.
-
+Se o `id` não for encontrado, será retornado status `404` com uma mensagem informando a situação.  
 Status: `404`
 ```json
 {
@@ -286,8 +254,7 @@ Status: `404`
 }
 ```
 
-Se você tentar excluir o seu próprio usuário, será retornado status `406` com uma mensagem informando a situação.
-
+Se você tentar excluir o seu próprio usuário, será retornado status `406` com uma mensagem informando a situação.  
 Status: `406`
 ```json
 {

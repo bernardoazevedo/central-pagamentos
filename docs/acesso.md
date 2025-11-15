@@ -4,7 +4,7 @@
 
 ## Login
 
-URL: `http://localhost/api/login`
+URL: `http://localhost/api/login`  
 Método: `POST`  
 Autenticação: `Não`  
 Request Body:
@@ -15,12 +15,9 @@ Request Body:
 }
 ```
 
-Resposta:
-
 ### Sucesso
 
-Você receberá token de acesso, com status `200`. Esse token deve ser utilizado como Bearer Token nas rotas seguintes como meio de autenticação.
-
+Você receberá um token de acesso, com status `200`. Esse token deve ser utilizado como Bearer Token nas rotas seguintes como meio de autenticação.  
 Status: `200`
 ```json
 {
@@ -30,8 +27,7 @@ Status: `200`
 
 ### Erro
 
-Se as informações de acesso estiverem incorretas, você será informado na resposta, que terá status `401`.
-
+Se as informações de acesso estiverem incorretas, você será informado na resposta, que terá status `401`.  
 Status: `401`
 ```json
 {
@@ -39,8 +35,7 @@ Status: `401`
 }
 ```
 
-Caso não informe algum dos parâmetros, você receberá um erro informando a situação, com status `422`.
-
+Caso não informe algum dos parâmetros, você receberá um erro informando a situação, com status `422`.  
 Status: `422`
 ```json
 {
@@ -57,17 +52,14 @@ Status: `422`
 
 ## Logout
 
-URL: `http://localhost/api/logout`
+URL: `http://localhost/api/logout`  
 Método: `POST`  
 Autenticação: `Sim`  
 Forma de autenticação: `Bearer Token`
 
-Resposta:
-
 ### Sucesso
 
-Se estiver logado, receberá uma mensagem informando que foi deslogado com status `200`.
-
+Se estiver logado, receberá uma mensagem informando que foi deslogado com status `200`.  
 Status: `200`
 ```json
 {

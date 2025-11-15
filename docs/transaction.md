@@ -4,19 +4,15 @@
 
 ## Listar transações
 
-URL: `http://localhost/api/transaction`
-Método: `GET` 
-Autenticação: `Sim`
-Forma de autenticação: `Bearer Token`
-
-Resposta:
+URL: `http://localhost/api/transaction`  
+Método: `GET`  
+Autenticação: `Sim`  
+Forma de autenticação: `Bearer Token`  
 
 ### Sucesso
 
-Se tudo correr bem, a API listará as transações retornando status `200`.
-
+Se tudo correr bem, a API listará as transações retornando status `200`.  
 Status: `200`
-
 ```json
 [
     {
@@ -34,8 +30,7 @@ Status: `200`
 
 ### Erro
 
-Se não houver transações cadastradas, será retornado status `404`, informando a situação.
-
+Se não houver transações cadastradas, será retornado status `404`, informando a situação.  
 Status: `404`
 ```json
 {
@@ -47,18 +42,15 @@ Status: `404`
 
 ## Buscar transação
 
-URL: `http://localhost/api/transaction/{id}`
-Método: `GET` 
-Autenticação: `Sim`
-Forma de autenticação: `Bearer Token`
-Parâmetros da rota: `id` da transação
-
-Resposta:
+URL: `http://localhost/api/transaction/{id}`  
+Método: `GET`   
+Autenticação: `Sim`  
+Forma de autenticação: `Bearer Token`  
+Parâmetros da rota: `id` da transação  
 
 ### Sucesso
 
-Se tudo correr bem, a API listará a transação identificada pelo ID informado, retornando status `200`.
-
+Se tudo correr bem, a API listará a transação identificada pelo ID informado, retornando status `200`.  
 Status: `200`
 ```json
 {
@@ -73,8 +65,7 @@ Status: `200`
 
 ### Erro
 
-Se o `id` não for encontrado, será retornado status `404` com uma mensagem informando a situação.
-
+Se o `id` não for encontrado, será retornado status `404` com uma mensagem informando a situação.  
 Status: `404`
 ```json
 {
@@ -87,9 +78,9 @@ Status: `404`
 
 Essa rota tenta efetuar o pagamento nos gateways registrados por prioridade, caso dê erro no primeiro, ele tenta efetuar no segundo e assim por diante. Caso não dê certo em nenhum, será retornado um erro.
 
-URL: `http://localhost/api/transaction`
-Método: `POST` 
-Autenticação: `Não`
+URL: `http://localhost/api/transaction`  
+Método: `POST`  
+Autenticação: `Não`  
 Request Body:
 ```json
 {
@@ -107,12 +98,9 @@ Request Body:
 }
 ```
 
-Resposta:
-
 ### Sucesso
 
-Se tudo correr bem, a API listará a transação identificada pelo ID informado, retornando status `201`.
-
+Se tudo correr bem, a API listará a transação identificada pelo ID informado, retornando status `201`.  
 Status: `201`
 ```json
 {
@@ -124,8 +112,7 @@ Status: `201`
 
 ### Erro
 
-Se não for informado nenhum produto, será retornado status `422` com uma mensagem informando a situação.
-
+Se não for informado nenhum produto, será retornado status `422` com uma mensagem informando a situação.  
 Status: `422`
 ```json
 {
@@ -138,8 +125,7 @@ Status: `422`
 }
 ```
 
-Se não for possível realizar o pagamento em nenhum dos gateways, uma mensagem será retornada, com status `500`.
-
+Se não for possível realizar o pagamento em nenhum dos gateways, uma mensagem será retornada, com status `500`.  
 Status: `500`
 ```json
 {
@@ -151,18 +137,15 @@ Status: `500`
 
 ## Reembolsar transação
 
-URL: `http://localhost/api/transaction/{id}/chargeback`
-Método: `POST` 
-Autenticação: `Sim`
-Forma de autenticação: `Bearer Token`
-Parâmetros da rota: `id` da transação
-
-Resposta:
+URL: `http://localhost/api/transaction/{id}/chargeback`  
+Método: `POST`  
+Autenticação: `Sim`  
+Forma de autenticação: `Bearer Token`  
+Parâmetros da rota: `id` da transação  
 
 ### Sucesso
 
-Se tudo correr bem, a API listará a transação reembolsada, retornando status `201`.
-
+Se tudo correr bem, a API listará a transação reembolsada, retornando status `201`.  
 Status: `201`
 ```json
 {
@@ -174,8 +157,7 @@ Status: `201`
 
 ### Erro
 
-Se não for encontrada uma compra com esse `id`, será informado o erro, com status `404`.
-
+Se não for encontrada uma compra com esse `id`, será informado o erro, com status `404`.  
 Status: `404`
 ```json
 {
@@ -183,8 +165,7 @@ Status: `404`
 }
 ```
 
-Se não for possível realizar o reembolso, uma mensagem será retornada, com status `500`.
-
+Se não for possível realizar o reembolso, uma mensagem será retornada, com status `500`.  
 Status: `500`
 ```json
 {
