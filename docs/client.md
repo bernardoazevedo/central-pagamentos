@@ -60,19 +60,13 @@ Status: `200`
     "transactions": [
         {
             "id": 1,
-            "gateways_id": 1,
-            "external_id": "ed8e556a-d1de-4f5c-8512-9a199654df7d",
-            "status": "PAID",
-            "amount": 12599,
-            "card_last_numbers": "4444"
+            "status": "CHARGED_BACK",
+            "amount": 493895
         },
         {
             "id": 2,
-            "gateways_id": 1,
-            "external_id": "e0022744-4041-49db-8904-47b8a28ce37f",
             "status": "PAID",
-            "amount": 0,
-            "card_last_numbers": "4444"
+            "amount": 493895
         }
     ]
 }
